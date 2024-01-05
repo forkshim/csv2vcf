@@ -16,16 +16,18 @@ def convert_to_vcard(input_file, single_output, input_file_format):
     FN = input_file_format['name']-1 if 'name' in input_file_format else None
     NICKNAME = input_file_format['nickname']-1 if 'nickname' in input_file_format else None
     ORG = input_file_format['org']-1 if 'org' in input_file_format else None
+    TITLE = input_file_format['title']-1 if 'title' in input_file_format else None
     TEL = input_file_format['tel']-1 if 'tel' in input_file_format else None
     URL = input_file_format['url']-1 if 'url' in input_file_format else None
     BDAY = input_file_format['bday']-1 if 'bday' in input_file_format else None
     ROLE = input_file_format['role']-1 if 'role' in input_file_format else None
     EMAIL = input_file_format['email']-1 if 'email' in input_file_format else None
     NOTE = input_file_format['note']-1 if 'note' in input_file_format else None
+    WORK = input_file_format['work']-1 if 'work' in input_file_format else None
 
     # if single output option is selected
     if single_output :
-        with open( input_file, 'r' ) as source_file:
+        with open( input_file, 'r' , encoding='gbk') as source_file:
             reader = csv.reader( source_file )
             single_vcf = open('csv2vcf/all_contacts.vcf', 'w')
             i = 0
@@ -40,17 +42,21 @@ def convert_to_vcard(input_file, single_output, input_file_format):
                 ROLE_VAL = row[ROLE] if ROLE is not None else ''
                 EMAIL_VAL = row[EMAIL] if EMAIL is not None else ''
                 NOTE_VAL = row[NOTE] if NOTE is not None else ''
+                WORK_VAL = row[WORK] if WORK is not None else ''
+                TITLE_VAL = row[TITLE] if TITLE is not None else ''
 
                 print('BEGIN:VCARD')
                 print('VERSION:3.0')
                 print('N:' + FN_VAL)
                 print('FN:' + FN_VAL)
                 print('NICKNAME:' + NICKNAME_VAL)
-                print('TEL;HOME;VOICE:' + TEL_VAL)
+                print('TEL;CELL:' + TEL_VAL)
+                print('TEL;WORK:' + WORK_VAL)
                 print('EMAIL:' + EMAIL_VAL)
                 print('BDAY:' + BDAY_VAL)
                 print('ORG:' + ORG_VAL)
                 print('ROLE:' + ROLE_VAL)
+                print('TITLE:'+ TITLE_VAL)
                 print('URL:' + URL_VAL)
                 print('NOTE:' + NOTE_VAL)
                 print('END:VCARD')
@@ -62,11 +68,13 @@ def convert_to_vcard(input_file, single_output, input_file_format):
                 single_vcf.write( 'N:' + FN_VAL + ';' + "\n")
                 single_vcf.write( 'FN:' + FN_VAL + "\n")
                 single_vcf.write( 'NICKNAME:' + NICKNAME_VAL + "\n")
-                single_vcf.write( 'TEL;HOME;VOICE:' + TEL_VAL + "\n")
+                single_vcf.write( 'TEL;CELL:' + TEL_VAL + "\n")
+                single_vcf.write( 'TEL;WORK:' + WORK_VAL + "\n")
                 single_vcf.write( 'EMAIL:' + EMAIL_VAL + "\n")
                 single_vcf.write( 'BDAY:' + BDAY_VAL + "\n")
                 single_vcf.write( 'ORG:' + ORG_VAL + "\n")
                 single_vcf.write( 'ROLE:' + ROLE_VAL + "\n")
+                single_vcf.write( 'TITLE:' + TITLE_VAL + "\n")
                 single_vcf.write( 'URL:' + URL_VAL + "\n")
                 single_vcf.write( 'NOTE:' + NOTE_VAL + "\n")
                 single_vcf.write( 'END:VCARD' + "\n")
